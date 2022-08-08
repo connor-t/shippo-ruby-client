@@ -130,7 +130,7 @@ module Shippo
         additional_hash = {
           :accept        => :json,
           :content_type  => :json,
-          :Authorization => "ShippoToken #{token}"
+          :Authorization => "#{auth_header} #{token}"
         }
         additional_hash[:'Shippo-API-Version'] = version if version
         headers.merge!(additional_hash)
@@ -153,6 +153,10 @@ module Shippo
 
       def token
         ::Shippo::API.token
+      end
+
+      def auth_header
+        token[0,6] == 'oauth.' ? 'Bearer' : 'ShippoToken'
       end
 
       def version
